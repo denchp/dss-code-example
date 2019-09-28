@@ -4,8 +4,9 @@
 #include <QPalette>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <game.h>
 
-gameBox::gameBox(QWidget *parent) :
+gameBox::gameBox(QWidget *parent, game gameData) :
     QWidget(parent),
     ui(new Ui::gameBox)
 {
@@ -15,13 +16,13 @@ gameBox::gameBox(QWidget *parent) :
 
     p.setColor(QPalette::Background, Qt::black);
 
-    QLabel *t = new QLabel("TOP", this);
-    t->setAlignment(Qt::AlignHCenter);
+    QLabel *t = new QLabel(QString::fromStdString(gameData.away.name + " @ " + gameData.home.name), this);
+    t->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
     QLabel *s = new QLabel("[THUMBNAIL]", this);
     s->setAlignment(Qt::AlignHCenter);
 
-    QLabel *b1 = new QLabel("Bottom 1", this);
+    QLabel *b1 = new QLabel(QString::fromStdString(gameData.away.name), this);
     b1->setAlignment(Qt::AlignHCenter);
 
     QLabel *b2 = new QLabel("Bottom 2", this);
@@ -32,7 +33,7 @@ gameBox::gameBox(QWidget *parent) :
     this->layout()->addWidget(b1);
     this->layout()->addWidget(b2);
 
-    this->setFixedSize(100, 200);
+    this->setFixedSize(400, 200);
 }
 
 gameBox::~gameBox()
