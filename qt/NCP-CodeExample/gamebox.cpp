@@ -32,7 +32,7 @@ gameBox::gameBox(QWidget *parent) :
     this->layout()->addWidget(b1);
     this->layout()->addWidget(b2);
 
-    this->resize(100, 200);
+    this->setFixedSize(100, 200);
 }
 
 gameBox::~gameBox()
