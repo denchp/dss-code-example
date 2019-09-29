@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <vector>
-#include <game.h>
+#include <gamebox.h>
 #include <apiclient.h>
 #include <gamecontainer.h>
 
@@ -17,12 +17,15 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow();
-    ~MainWindow();
+    ~MainWindow() override;
 
 private:
     Ui::MainWindow *ui;
+    void keyPressEvent(QKeyEvent*) override;
     void onDataReceived(vector<game>);
     apiClient *client;
     gameContainer *container;
+    vector<gameBox> games;
+    int selectedGame;
 };
 #endif // MAINWINDOW_H

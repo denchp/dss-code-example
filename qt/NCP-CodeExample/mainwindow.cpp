@@ -1,21 +1,27 @@
 #include "mainwindow.h"
-#include <apiclient.h>
 #include <vector>
-#include <game.h>
+
 #include <QtCore>
 #include <QSpacerItem>
 #include <QHBoxLayout>
+#include <QStyle>
+#include <QScrollArea>
+#include <QMainWindow>
+#include <QKeyEvent>
+
+#include <apiclient.h>
+#include <game.h>
 #include <gamebox.h>
 #include <gamecontainer.h>
-#include <QScrollArea>
 
-MainWindow::MainWindow()
+MainWindow::MainWindow() : QMainWindow()
 {
-    this->setStyleSheet("background:url(:/background.jpg)");
     this->showMaximized();
 
     // Create central widget
-    QWidget * window = new QWidget(this);
+    QFrame * window = new QFrame(this);
+    window->setProperty("class", "mainWindow");
+    window->setStyleSheet("QFrame.mainWindow { background: url(:/background.jpg) }");
 
     // Create Scroll Area
     QScrollArea *scrollArea = new QScrollArea();
@@ -28,6 +34,8 @@ MainWindow::MainWindow()
 
     this->setCentralWidget(window);
 
+    this->grabKeyboard();
+
     string date = "2019-09-28";
 
     client->getGames(date, [=](vector<game> g) {
@@ -35,11 +43,22 @@ MainWindow::MainWindow()
     });
 }
 
+void MainWindow::keyPressEvent(QKeyEvent * event) {
+    switch(event->key()) {
+        case Qt::Key_Left:
+            qDebug() << "Left arrow press";
+            break;
+        case Qt::Key_Right:
+            qDebug() << "Right arrow press";
+            break;
+    }
+}
 void MainWindow::onDataReceived(vector<game> games) {
     qDebug() << "Games received!";
 
     for (game g : games) {
         gameBox *newGame = new gameBox(this, g);
+//        newGame->setFocus(true);
         this->centralWidget()->layout()->addWidget(newGame);
     }
 }

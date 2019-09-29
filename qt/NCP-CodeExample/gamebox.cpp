@@ -1,10 +1,13 @@
 #include "gamebox.h"
 #include "ui_gamebox.h"
+#include <game.h>
+
 #include <QPainter>
 #include <QPalette>
 #include <QVBoxLayout>
 #include <QLabel>
-#include <game.h>
+#include <QImage>
+
 
 gameBox::gameBox(QWidget *parent, game gameData) :
     QWidget(parent),
@@ -12,28 +15,42 @@ gameBox::gameBox(QWidget *parent, game gameData) :
 {
     ui->setupUi(this);
     this->setLayout(new QVBoxLayout());
-    QPalette p = palette();
+    this->layout()->setAlignment(Qt::AlignHCenter);
 
+    QPalette p = palette();
     p.setColor(QPalette::Background, Qt::black);
 
-    QLabel *t = new QLabel(QString::fromStdString(gameData.away.name + " @ " + gameData.home.name), this);
-    t->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    QPalette labelPallete = palette();
+    p.setColor(QPalette::Background, Qt::yellow);
+    p.setColor(QPalette::Foreground, Qt::blue);
 
-    QLabel *s = new QLabel("[THUMBNAIL]", this);
-    s->setAlignment(Qt::AlignHCenter);
+    top = new QLabel(QString::fromStdString(gameData.away.name + " @ " + gameData.home.name), this);
+    top->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    top->setPalette(labelPallete);
+    top->setMaximumHeight(24);
+    thumbnail = new QFrame();
+    thumbnail->setFixedSize(400, 200);
+    thumbnail->setStyleSheet("background: black");
 
-    QLabel *b1 = new QLabel(QString::fromStdString(gameData.away.name), this);
-    b1->setAlignment(Qt::AlignHCenter);
+    bottom1 = new QLabel(QString::fromStdString(gameData.away.name), this);
+    bottom1->setAlignment(Qt::AlignHCenter);
+    bottom1->setMaximumHeight(24);
 
-    QLabel *b2 = new QLabel("Bottom 2", this);
-    b2->setAlignment(Qt::AlignHCenter);
+    bottom2 = new QLabel("Bottom 2", this);
+    bottom2->setAlignment(Qt::AlignHCenter);
+    bottom2->setMaximumHeight(24);
 
-    this->layout()->addWidget(t);
-    this->layout()->addWidget(s);
-    this->layout()->addWidget(b1);
-    this->layout()->addWidget(b2);
+    this->layout()->addWidget(top);
+    this->layout()->addWidget(thumbnail);
+    this->layout()->addWidget(bottom1);
+    this->layout()->addWidget(bottom2);
+    this->adjustSize();
+//    this->setFixedSize(400, 200);
+    this->setStyleSheet("gameBox.focused QLabel { font-weight: bold }");
+}
 
-    this->setFixedSize(400, 200);
+void gameBox::setFocus(bool hasFocus) {
+    this->setProperty("class", hasFocus ? "focused" : "");
 }
 
 gameBox::~gameBox()
