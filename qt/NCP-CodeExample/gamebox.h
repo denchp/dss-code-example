@@ -6,6 +6,7 @@
 #include <QFrame>
 #include <QByteArray>
 
+#include <apiclient.h>
 #include <game.h>
 
 namespace Ui {
@@ -26,10 +27,9 @@ public:
 private:
     Ui::gameBox *ui;
 
+    apiClient *client;
+
     void onImageReceived(QByteArray);
-    QLabel *top;
-    QLabel *bottom1;
-    QLabel *bottom2;
     QLabel *thumbnail;
 };
 

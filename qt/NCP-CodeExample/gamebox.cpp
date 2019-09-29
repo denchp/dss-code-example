@@ -28,32 +28,51 @@ gameBox::gameBox(game g, QWidget *parent) :
     p.setColor(QPalette::Background, Qt::yellow);
     p.setColor(QPalette::Foreground, Qt::blue);
 
-    top = new QLabel(this);
+    QLabel *top = new QLabel(this);
     top->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     top->setPalette(labelPallete);
     top->setMaximumHeight(24);
-    top->setText(QString::fromStdString(g.away.name));
+    top->setText(QString::fromStdString(g.away.name + " @ " + g.home.name));
 
     thumbnail = new QLabel();
     thumbnail->setFixedSize(WIDTH, HEIGHT);
+    thumbnail->setScaledContents(true);
     thumbnail->setStyleSheet("background: black");
+    thumbnail->setAlignment(Qt::AlignHCenter);
 
-    bottom1 = new QLabel(this);
-    bottom1->setAlignment(Qt::AlignHCenter);
-    bottom1->setMaximumHeight(24);
 
-    bottom2 = new QLabel("Bottom 2", this);
-    bottom2->setAlignment(Qt::AlignHCenter);
-    bottom2->setMaximumHeight(24);
+    QLabel *bottomTop = new QLabel(QString::fromStdString(g.recap.title));
+    bottomTop->setAlignment(Qt::AlignHCenter);
+    bottomTop->setMaximumHeight(48);
+    bottomTop->setMaximumWidth(WIDTH);
+    bottomTop->setWordWrap(true);
 
-    apiClient *client = new apiClient();
+    QLabel *bottomMiddle =
+            new QLabel(
+                QString::fromStdString(g.away.name +
+                                       " (" + to_string(g.away.record.wins) + "-" +
+                                       to_string(g.away.record.losses) + ") " + to_string(g.away.score)));
+
+    bottomMiddle->setAlignment(Qt::AlignHCenter);
+    bottomMiddle->setMaximumHeight(24);
+
+    QLabel *bottomBottom =
+            new QLabel(
+                QString::fromStdString(g.home.name +
+                                       " (" + to_string(g.home.record.wins) + "-" +
+                                       to_string(g.home.record.losses) + ") " + to_string(g.away.score)));
+    bottomBottom->setAlignment(Qt::AlignHCenter);
+    bottomBottom->setMaximumHeight(24);
+
     client->getImage(g.recap.imgUrl, [=](QByteArray d) { onImageReceived(d); });
 
 
     this->layout()->addWidget(top);
     this->layout()->addWidget(thumbnail);
-    this->layout()->addWidget(bottom1);
-    this->layout()->addWidget(bottom2);
+    this->layout()->addWidget(bottomTop);
+    this->layout()->addWidget(bottomMiddle);
+    this->layout()->addWidget(bottomBottom);
+
     this->adjustSize();
     this->setStyleSheet(".focused QLabel { font-weight: bold }");
 
@@ -74,6 +93,7 @@ void gameBox::setFocus(bool hasFocus) {
 }
 
 void gameBox::onImageReceived(QByteArray data) {
+    qDebug() << "Image received: " << data.size();
     QPixmap pixmap;
     pixmap.loadFromData(data);
     this->thumbnail->setPixmap(pixmap);

@@ -719,6 +719,9 @@ moc_gamebox.cpp: ../NCP-CodeExample/gamebox.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtWidgets.framework/Headers/qframe.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/QByteArray \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/qbytearray.h \
+		../NCP-CodeExample/apiclient.h \
+		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/QJsonDocument \
+		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/qjsondocument.h \
 		../NCP-CodeExample/game.h \
 		moc_predefs.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/bin/moc
@@ -747,10 +750,10 @@ moc_mainwindow.cpp: ../NCP-CodeExample/mainwindow.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtWidgets.framework/Headers/qframe.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/QByteArray \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/qbytearray.h \
-		../NCP-CodeExample/game.h \
 		../NCP-CodeExample/apiclient.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/QJsonDocument \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/qjsondocument.h \
+		../NCP-CodeExample/game.h \
 		../NCP-CodeExample/gamecontainer.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
@@ -805,11 +808,11 @@ gamebox.o: ../NCP-CodeExample/gamebox.cpp ../NCP-CodeExample/gamebox.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtWidgets.framework/Headers/qframe.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/QByteArray \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/qbytearray.h \
-		../NCP-CodeExample/game.h \
-		ui_gamebox.h \
 		../NCP-CodeExample/apiclient.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/QJsonDocument \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/qjsondocument.h \
+		../NCP-CodeExample/game.h \
+		ui_gamebox.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/QtDebug \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/qdebug.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtGui.framework/Headers/QPainter \
@@ -1030,10 +1033,10 @@ main.o: ../NCP-CodeExample/main.cpp ../NCP-CodeExample/mainwindow.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtWidgets.framework/Headers/qframe.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/QByteArray \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/qbytearray.h \
-		../NCP-CodeExample/game.h \
 		../NCP-CodeExample/apiclient.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/QJsonDocument \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/qjsondocument.h \
+		../NCP-CodeExample/game.h \
 		../NCP-CodeExample/gamecontainer.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
@@ -1055,10 +1058,10 @@ mainwindow.o: ../NCP-CodeExample/mainwindow.cpp ../NCP-CodeExample/mainwindow.h 
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtWidgets.framework/Headers/qframe.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/QByteArray \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/qbytearray.h \
-		../NCP-CodeExample/game.h \
 		../NCP-CodeExample/apiclient.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/QJsonDocument \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtCore.framework/Headers/qjsondocument.h \
+		../NCP-CodeExample/game.h \
 		../NCP-CodeExample/gamecontainer.h \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
 		/Users/wpd6503/Qt/5.13.1/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \

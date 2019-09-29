@@ -25,7 +25,6 @@ struct game {
     team home;
     team away;
     recap recap;
-    bool isHighlighted;
 };
 
 #endif // GAME_H

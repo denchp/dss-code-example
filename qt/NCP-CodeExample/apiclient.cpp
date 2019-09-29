@@ -60,10 +60,9 @@ vector<game> apiClient::parseData(QJsonDocument &json) {
                 } // record
             },//away
             {
-                json["dates"][0]["games"][i]["content"]["editoral"]["recap"]["mlb"]["image"]["cuts"][0]["src"].toString().toStdString(),
-                json["dates"][0]["games"][i]["content"]["editoral"]["recap"]["mlb"]["headline"].toString().toStdString()
+                json["dates"][0]["games"][i]["content"]["editorial"]["recap"]["mlb"]["image"]["cuts"][6]["src"].toString().toStdString(),
+                json["dates"][0]["games"][i]["content"]["editorial"]["recap"]["mlb"]["headline"].toString().toStdString()
             }, //recap
-            false //isHighlighted
         };
 
         games.push_back(g);
