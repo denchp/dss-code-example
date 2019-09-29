@@ -32,7 +32,8 @@ gameBox::gameBox(game g, QWidget *parent) :
     top->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     top->setPalette(labelPallete);
     top->setMaximumHeight(24);
-    top->setText(QString::fromStdString(g.away.name + " @ " + g.home.name));
+    top->setText(QString::fromStdString(g.away.name + " (" + to_string(g.away.score) + ") @ " +
+                                        g.home.name + " (" + to_string(g.home.score) + ")"));
 
     thumbnail = new QLabel();
     thumbnail->setFixedSize(WIDTH, HEIGHT);
@@ -51,7 +52,7 @@ gameBox::gameBox(game g, QWidget *parent) :
             new QLabel(
                 QString::fromStdString(g.away.name +
                                        " (" + to_string(g.away.record.wins) + "-" +
-                                       to_string(g.away.record.losses) + ") " + to_string(g.away.score)));
+                                       to_string(g.away.record.losses) + ") "));
 
     bottomMiddle->setAlignment(Qt::AlignHCenter);
     bottomMiddle->setMaximumHeight(24);
@@ -60,7 +61,7 @@ gameBox::gameBox(game g, QWidget *parent) :
             new QLabel(
                 QString::fromStdString(g.home.name +
                                        " (" + to_string(g.home.record.wins) + "-" +
-                                       to_string(g.home.record.losses) + ") " + to_string(g.away.score)));
+                                       to_string(g.home.record.losses) + ") "));
     bottomBottom->setAlignment(Qt::AlignHCenter);
     bottomBottom->setMaximumHeight(24);
 
