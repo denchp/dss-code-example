@@ -2,7 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QScrollArea>
+
 #include <vector>
+
 #include <gamebox.h>
 #include <apiclient.h>
 #include <gamecontainer.h>
@@ -21,11 +24,13 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QScrollArea *scrollArea;
+
     void keyPressEvent(QKeyEvent*) override;
     void onDataReceived(vector<game>);
     apiClient *client;
     gameContainer *container;
-    vector<gameBox> games;
-    int selectedGame;
+    vector<gameBox*> boxes;
+    ulong highlightedGame = 0;
 };
 #endif // MAINWINDOW_H

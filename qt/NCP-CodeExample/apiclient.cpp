@@ -48,6 +48,7 @@ vector<game> apiClient::parseData(QJsonDocument &json) {
                     json["dates"][0]["games"][i]["teams"]["away"]["leagueRecord"]["pct"].toString().toStdString()
                 } // record
             },//away
+            false //isHighlighted
         };
 
         games.push_back(g);

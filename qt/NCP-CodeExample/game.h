@@ -19,6 +19,7 @@ struct team {
 struct game {
     team home;
     team away;
+    bool isHighlighted;
 };
 
 #endif // GAME_H

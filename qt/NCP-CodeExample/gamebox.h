@@ -16,14 +16,15 @@ class gameBox : public QWidget
     Q_OBJECT
 
 public:
-    explicit gameBox(QWidget *parent = nullptr, game gameData = {});
+    explicit gameBox(game g, QWidget *parent = nullptr);
 
     void setFocus(bool);
 
-    ~gameBox();
+    ~gameBox() override;
 
 private:
     Ui::gameBox *ui;
+
     QLabel *top;
     QLabel *bottom1;
     QLabel *bottom2;
