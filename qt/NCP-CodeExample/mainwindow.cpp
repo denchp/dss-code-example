@@ -8,6 +8,8 @@
 #include <QScrollArea>
 #include <QMainWindow>
 #include <QKeyEvent>
+#include <QPixmap>
+#include <QPalette>
 
 #include <apiclient.h>
 #include <game.h>
@@ -17,22 +19,26 @@
 MainWindow::MainWindow() : QMainWindow()
 {
     this->showMaximized();
+    this->setStyleSheet("* { background: transparent }");
 
-    // Create central widget
-    QFrame * window = new QFrame(this);
+    // Create the main window
+    QFrame *window = new QFrame();
     window->setProperty("class", "mainWindow");
     window->setStyleSheet("QFrame.mainWindow { background: url(:/background.jpg) }");
+    window->setLayout(new QHBoxLayout());
 
-    // Create Scroll Area
-    this->scrollArea = new QScrollArea();
-    this->scrollArea->setWidget(window);
+    // Create Scroll Area and GameContainer
+    this->gameContainer = new QFrame();
+    this->scrollArea = new QScrollArea(this);
+    this->scrollArea->setWidgetResizable(true);
+    this->scrollArea->setWidget(this->gameContainer);
+    window->layout()->addWidget(this->scrollArea);
 
     // Set layout
-    QHBoxLayout *layout = new QHBoxLayout(scrollArea);
-    window->setLayout(layout);
+    QHBoxLayout *layout = new QHBoxLayout();
+    this->gameContainer->setLayout(layout);
 
     this->setCentralWidget(window);
-
     this->grabKeyboard();
 
     string date = "2019-09-28";
@@ -57,8 +63,8 @@ void MainWindow::keyPressEvent(QKeyEvent * event) {
             }
             break;
         case Qt::Key_Right:
-            qDebug() << "Right arrow press";
-            if (this->highlightedGame < this->boxes.size()) {
+            qDebug() << "Right arrow press" << this->boxes.size();
+            if (this->highlightedGame < this->boxes.size() - 1) {
                 qDebug() << "Scrolling by -" << this->boxes[0]->width();
                 this->scrollArea->scroll(-1 * this->boxes[0]->width(), 0);
                 this->highlightedGame += 1;
@@ -77,7 +83,7 @@ void MainWindow::onDataReceived(vector<game> games) {
     for (game g : games) {
         gameBox *newGame = new gameBox(g, this);
         this->boxes.push_back(newGame);
-        this->centralWidget()->layout()->addWidget(newGame);
+        this->gameContainer->layout()->addWidget(newGame);
     }
 
     this->boxes[0]->setFocus(true);

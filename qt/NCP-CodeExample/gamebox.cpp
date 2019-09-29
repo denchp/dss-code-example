@@ -9,6 +9,8 @@
 #include <QLabel>
 #include <QImage>
 
+const int HEIGHT = 100;
+const int WIDTH = 200;
 
 gameBox::gameBox(game g, QWidget *parent) :
     QWidget(parent),
@@ -32,7 +34,7 @@ gameBox::gameBox(game g, QWidget *parent) :
     top->setText(QString::fromStdString(g.away.name));
 
     thumbnail = new QFrame();
-    thumbnail->setFixedSize(100, 50);
+    thumbnail->setFixedSize(WIDTH, HEIGHT);
     thumbnail->setStyleSheet("background: black");
 
     bottom1 = new QLabel(this);
@@ -53,15 +55,17 @@ gameBox::gameBox(game g, QWidget *parent) :
 }
 
 void gameBox::setFocus(bool hasFocus) {
-    this->setStyleSheet(".focused QLabel { font-weight: bold }");
-
     if (hasFocus) {
         this->setProperty("class", "focused");
+        qDebug() << "Size up";
+        this->thumbnail->setFixedSize(WIDTH * 1.5, HEIGHT * 1.5);
     } else {
+        qDebug() << "Size down";
         this->setProperty("class", "");
+        this->thumbnail->setFixedSize(WIDTH, HEIGHT);
     }
 
-    this->repaint();
+    this->setStyleSheet(".focused QLabel { font-weight: bold }");
 }
 
 gameBox::~gameBox()

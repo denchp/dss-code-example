@@ -25,11 +25,11 @@ public:
 private:
     Ui::MainWindow *ui;
     QScrollArea *scrollArea;
+    QFrame *gameContainer;
 
     void keyPressEvent(QKeyEvent*) override;
     void onDataReceived(vector<game>);
     apiClient *client;
-    gameContainer *container;
     vector<gameBox*> boxes;
     ulong highlightedGame = 0;
 };
