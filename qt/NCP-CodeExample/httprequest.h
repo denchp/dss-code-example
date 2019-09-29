@@ -14,6 +14,7 @@ class httpRequest : public QObject
 public:
     httpRequest(string url);
     void send(function<void(string)> onDataReceived);
+    void send(function<void(QByteArray)> onDataReceived);
 
 private:
     void requestComplete(QNetworkReply *reply);

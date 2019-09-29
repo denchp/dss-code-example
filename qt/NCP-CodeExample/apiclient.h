@@ -6,6 +6,7 @@
 #include <functional>
 
 #include <QJsonDocument>
+#include <QByteArray>
 
 #include <game.h>
 
@@ -15,7 +16,9 @@ class apiClient
 {
 public:
     apiClient();
+
     void getGames(string, function<void(vector<game>)>);
+    void getImage(string, function<void(QByteArray)>);
 
 private:
     vector<game> parseData(QJsonDocument &json);

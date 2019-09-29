@@ -3,20 +3,31 @@
 #include <string>
 #include <vector>
 #include <iostream>
+
 #include <httprequest.h>
-#include <QJsonDocument>
-#include <QString>
 #include <game.h>
+
+#include <QJsonDocument>
+#include <QByteArray>
+#include <QString>
 
 using namespace std;
 
 void apiClient::getGames(string date, function<void(vector<game>)> onDataParsed){
-    httpRequest * req = new httpRequest("http://statsapi.mlb.com/api/v1/schedule?hydrate=game(content(editorial(recap))),decisions&date=" + date + "&sportId=1");
+    httpRequest *req = new httpRequest("http://statsapi.mlb.com/api/v1/schedule?hydrate=game(content(editorial(recap))),decisions&date=" + date + "&sportId=1");
 
     req->send([=](string data) {
         QJsonDocument doc = QJsonDocument::fromJson(QString::fromStdString(data).toUtf8());
         vector<game> games = this->parseData(doc);
         onDataParsed(games);
+    });
+}
+
+void apiClient::getImage(string url, function<void (QByteArray)> onImageReceived) {
+    httpRequest *req = new httpRequest(url);
+
+    req->send([=](QByteArray data) {
+        onImageReceived(data);
     });
 }
 
@@ -48,6 +59,10 @@ vector<game> apiClient::parseData(QJsonDocument &json) {
                     json["dates"][0]["games"][i]["teams"]["away"]["leagueRecord"]["pct"].toString().toStdString()
                 } // record
             },//away
+            {
+                json["dates"][0]["games"][i]["content"]["editoral"]["recap"]["mlb"]["image"]["cuts"][0]["src"].toString().toStdString(),
+                json["dates"][0]["games"][i]["content"]["editoral"]["recap"]["mlb"]["headline"].toString().toStdString()
+            }, //recap
             false //isHighlighted
         };
 

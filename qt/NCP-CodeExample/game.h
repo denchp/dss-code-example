@@ -16,9 +16,15 @@ struct team {
     leagueRecord record;
 };
 
+struct recap {
+    string imgUrl;
+    string title;
+};
+
 struct game {
     team home;
     team away;
+    recap recap;
     bool isHighlighted;
 };
 

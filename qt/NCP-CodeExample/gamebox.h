@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QFrame>
+#include <QByteArray>
 
 #include <game.h>
 
@@ -25,10 +26,11 @@ public:
 private:
     Ui::gameBox *ui;
 
+    void onImageReceived(QByteArray);
     QLabel *top;
     QLabel *bottom1;
     QLabel *bottom2;
-    QFrame *thumbnail;
+    QLabel *thumbnail;
 };
 
 #endif // GAMEBOX_H

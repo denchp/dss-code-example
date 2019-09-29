@@ -25,7 +25,7 @@ public:
             gameBox->setObjectName(QString::fromUtf8("gameBox"));
         gameBox->resize(805, 590);
         gameBox->setMinimumSize(QSize(0, 0));
-        gameBox->setAutoFillBackground(true);
+        gameBox->setAutoFillBackground(false);
         gameBox->setStyleSheet(QString::fromUtf8(""));
 
         retranslateUi(gameBox);

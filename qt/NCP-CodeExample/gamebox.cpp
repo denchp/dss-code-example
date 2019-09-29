@@ -1,6 +1,7 @@
 #include "gamebox.h"
 #include "ui_gamebox.h"
 #include <game.h>
+#include <apiclient.h>
 
 #include <QtDebug>
 #include <QPainter>
@@ -33,7 +34,7 @@ gameBox::gameBox(game g, QWidget *parent) :
     top->setMaximumHeight(24);
     top->setText(QString::fromStdString(g.away.name));
 
-    thumbnail = new QFrame();
+    thumbnail = new QLabel();
     thumbnail->setFixedSize(WIDTH, HEIGHT);
     thumbnail->setStyleSheet("background: black");
 
@@ -44,6 +45,10 @@ gameBox::gameBox(game g, QWidget *parent) :
     bottom2 = new QLabel("Bottom 2", this);
     bottom2->setAlignment(Qt::AlignHCenter);
     bottom2->setMaximumHeight(24);
+
+    apiClient *client = new apiClient();
+    client->getImage(g.recap.imgUrl, [=](QByteArray d) { onImageReceived(d); });
+
 
     this->layout()->addWidget(top);
     this->layout()->addWidget(thumbnail);
@@ -66,6 +71,12 @@ void gameBox::setFocus(bool hasFocus) {
     }
 
     this->setStyleSheet(".focused QLabel { font-weight: bold }");
+}
+
+void gameBox::onImageReceived(QByteArray data) {
+    QPixmap pixmap;
+    pixmap.loadFromData(data);
+    this->thumbnail->setPixmap(pixmap);
 }
 
 gameBox::~gameBox()

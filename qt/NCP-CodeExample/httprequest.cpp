@@ -3,9 +3,11 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
+#include <QByteArray>
 #include <QUrl>
 #include <QString>
 #include <QtCore>
+
 #include <iostream>
 
 using namespace std;
@@ -29,6 +31,21 @@ void httpRequest::send(function<void(string)> onDataReceived) {
 
     manager->get(*request);
 }
+
+
+void httpRequest::send(function<void(QByteArray)> onDataReceived) {
+    manager = new QNetworkAccessManager();
+
+    connect(manager, &QNetworkAccessManager::finished,
+            this, [=](QNetworkReply * reply) {
+        QByteArray data = reply->readAll();
+        qDebug() << "Data received";
+        onDataReceived(data);
+    });
+
+    manager->get(*request);
+}
+
 
 void httpRequest::requestComplete(QNetworkReply * reply) {
     if (reply->error()) {
