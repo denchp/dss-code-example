@@ -7,6 +7,7 @@
 #include <httprequest.h>
 #include <game.h>
 
+#include <QDebug>
 #include <QJsonDocument>
 #include <QByteArray>
 #include <QString>
@@ -65,6 +66,7 @@ vector<game> apiClient::parseData(QJsonDocument &json) {
             }, //recap
         };
 
+        qDebug() << QString::fromStdString(g.recap.imgUrl);
         games.push_back(g);
     }
 

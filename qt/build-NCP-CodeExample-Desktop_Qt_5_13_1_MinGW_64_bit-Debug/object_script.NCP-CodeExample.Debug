@@ -1,0 +1,10 @@
+debug/apiclient.o
+debug/gamebox.o
+debug/gamecontainer.o
+debug/httprequest.o
+debug/main.o
+debug/mainwindow.o
+debug/qrc_resources.o
+debug/moc_gamebox.o
+debug/moc_gamecontainer.o
+debug/moc_mainwindow.o

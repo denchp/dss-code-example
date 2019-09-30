@@ -4,6 +4,7 @@
 #include <QtCore>
 #include <QSpacerItem>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QStyle>
 #include <QScrollArea>
 #include <QMainWindow>
@@ -24,7 +25,7 @@ MainWindow::MainWindow() : QMainWindow()
     QWidget *window = new QWidget();
     window->setProperty("class", "mainWindow");
     window->setStyleSheet("QWidget.mainWindow { background: url(:/background.jpg) }");
-    window->setLayout(new QHBoxLayout());
+    window->setLayout(new QVBoxLayout());
 
     // Create Scroll Area and GameContainer
     this->gameContainer = new QFrame();
@@ -51,11 +52,11 @@ MainWindow::MainWindow() : QMainWindow()
 }
 
 void MainWindow::keyPressEvent(QKeyEvent * event) {
-    if (this->boxes.size() == 0) {
+    if (this->boxes.size() == 0) { // avoid crashing if someone mashes the keyboard before we've recieved games back
         return;
     }
 
-    // Removed existing highlight
+    // Remove existing highlight
     this->boxes[this->highlightedGame]->setFocus(false);
     qDebug() << "Moving from: " << this->highlightedGame;
 
@@ -63,14 +64,12 @@ void MainWindow::keyPressEvent(QKeyEvent * event) {
         case Qt::Key_Left:
             qDebug() << "Left arrow press";
             if (this->highlightedGame > 0) {
-                qDebug() << "Scrolling by -" << this->boxes[0]->width();
                 this->highlightedGame -= 1;
             }
             break;
         case Qt::Key_Right:
-            qDebug() << "Right arrow press" << this->boxes.size();
+            qDebug() << "Right arrow press";
             if (this->highlightedGame < this->boxes.size() - 1) {
-                qDebug() << "Scrolling by " << this->boxes[0]->width();
                 this->highlightedGame += 1;
             }
             break;

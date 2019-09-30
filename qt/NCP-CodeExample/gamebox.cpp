@@ -13,6 +13,8 @@
 const int HEIGHT = 100;
 const int WIDTH = 200;
 
+const string STYLES = "QLabel { color: white} .focused QLabel { font-weight: bold }";
+
 gameBox::gameBox(game g, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::gameBox)
@@ -21,32 +23,22 @@ gameBox::gameBox(game g, QWidget *parent) :
     this->setLayout(new QVBoxLayout());
     this->layout()->setAlignment(Qt::AlignHCenter);
 
-    QPalette p = palette();
-    p.setColor(QPalette::Background, Qt::black);
-
-    QPalette labelPallete = palette();
-    p.setColor(QPalette::Background, Qt::yellow);
-    p.setColor(QPalette::Foreground, Qt::blue);
-
     QLabel *top = new QLabel(this);
-    top->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    top->setPalette(labelPallete);
     top->setMaximumHeight(24);
+    top->setAlignment(Qt::AlignHCenter);
     top->setText(QString::fromStdString(g.away.name + " (" + to_string(g.away.score) + ") @ " +
                                         g.home.name + " (" + to_string(g.home.score) + ")"));
 
     thumbnail = new QLabel();
     thumbnail->setFixedSize(WIDTH, HEIGHT);
-    thumbnail->setScaledContents(true);
+//    thumbnail->setScaledContents(true);
     thumbnail->setStyleSheet("background: black");
     thumbnail->setAlignment(Qt::AlignHCenter);
 
-
     QLabel *bottomTop = new QLabel(QString::fromStdString(g.recap.title));
-    bottomTop->setAlignment(Qt::AlignHCenter);
     bottomTop->setMaximumHeight(48);
-    bottomTop->setMaximumWidth(WIDTH);
     bottomTop->setWordWrap(true);
+    bottomTop->setAlignment(Qt::AlignHCenter);
 
     QLabel *bottomMiddle =
             new QLabel(
@@ -54,17 +46,16 @@ gameBox::gameBox(game g, QWidget *parent) :
                                        " (" + to_string(g.away.record.wins) + "-" +
                                        to_string(g.away.record.losses) + ") "));
 
-    bottomMiddle->setAlignment(Qt::AlignHCenter);
     bottomMiddle->setMaximumHeight(24);
+    bottomMiddle->setAlignment(Qt::AlignHCenter);
 
     QLabel *bottomBottom =
             new QLabel(
                 QString::fromStdString(g.home.name +
                                        " (" + to_string(g.home.record.wins) + "-" +
                                        to_string(g.home.record.losses) + ") "));
-    bottomBottom->setAlignment(Qt::AlignHCenter);
     bottomBottom->setMaximumHeight(24);
-
+    bottomBottom->setAlignment(Qt::AlignHCenter);
     client->getImage(g.recap.imgUrl, [=](QByteArray d) { onImageReceived(d); });
 
 
@@ -75,8 +66,7 @@ gameBox::gameBox(game g, QWidget *parent) :
     this->layout()->addWidget(bottomBottom);
 
     this->adjustSize();
-    this->setStyleSheet(".focused QLabel { font-weight: bold }");
-
+    this->setStyleSheet(QString::fromStdString(STYLES));
 }
 
 void gameBox::setFocus(bool hasFocus) {
@@ -84,13 +74,14 @@ void gameBox::setFocus(bool hasFocus) {
         this->setProperty("class", "focused");
         qDebug() << "Size up";
         this->thumbnail->setFixedSize(WIDTH * 1.5, HEIGHT * 1.5);
+
     } else {
         qDebug() << "Size down";
         this->setProperty("class", "");
         this->thumbnail->setFixedSize(WIDTH, HEIGHT);
     }
 
-    this->setStyleSheet(".focused QLabel { font-weight: bold }");
+    this->setStyleSheet(QString::fromStdString(STYLES));
 }
 
 void gameBox::onImageReceived(QByteArray data) {
