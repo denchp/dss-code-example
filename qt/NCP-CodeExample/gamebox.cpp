@@ -23,38 +23,48 @@ gameBox::gameBox(game g, QWidget *parent) :
     this->setLayout(new QVBoxLayout());
     this->layout()->setAlignment(Qt::AlignHCenter);
 
-    QLabel *top = new QLabel(this);
+    this->top = new QLabel(this);
     top->setMaximumHeight(24);
     top->setAlignment(Qt::AlignHCenter);
+
+    QSizePolicy p = top->sizePolicy();
+    p.setRetainSizeWhenHidden(true);
+    top->setSizePolicy(p);
+
+    top->hide();
     top->setText(QString::fromStdString(g.away.name + " (" + to_string(g.away.score) + ") @ " +
                                         g.home.name + " (" + to_string(g.home.score) + ")"));
 
-    thumbnail = new QLabel();
+    this->thumbnail = new QLabel();
+    thumbnail->sizePolicy().setRetainSizeWhenHidden(true);
     thumbnail->setFixedSize(WIDTH, HEIGHT);
     thumbnail->setScaledContents(true);
     thumbnail->setStyleSheet("background: black");
     thumbnail->setAlignment(Qt::AlignHCenter);
 
-    QLabel *bottomTop = new QLabel(QString::fromStdString(g.recap.title));
+    this->bottomTop = new QLabel(QString::fromStdString(g.recap.title));
+    bottomTop->setSizePolicy(p);
+
     bottomTop->setMaximumHeight(24);
+    bottomTop->hide();
     bottomTop->setWordWrap(true);
     bottomTop->setAlignment(Qt::AlignHCenter);
 
-    QLabel *bottomMiddle =
-            new QLabel(
+    this->bottomMiddle = new QLabel(
                 QString::fromStdString(g.away.name +
                                        " (" + to_string(g.away.record.wins) + "-" +
-                                       to_string(g.away.record.losses) + ") "));
-
-    bottomMiddle->setMaximumHeight(24);
+                                       to_string(g.away.record.losses) + ") "));bottomMiddle->setMaximumHeight(24);
     bottomMiddle->setAlignment(Qt::AlignHCenter);
+    bottomMiddle->setSizePolicy(p);
+    bottomMiddle->hide();
 
-    QLabel *bottomBottom =
-            new QLabel(
+    this->bottomBottom = new QLabel(
                 QString::fromStdString(g.home.name +
                                        " (" + to_string(g.home.record.wins) + "-" +
                                        to_string(g.home.record.losses) + ") "));
     bottomBottom->setMaximumHeight(24);
+    bottomBottom->setSizePolicy(p);
+    bottomBottom->hide();
     bottomBottom->setAlignment(Qt::AlignHCenter);
     client->getImage(g.recap.imgUrl, [=](QByteArray d) { onImageReceived(d); });
 
@@ -74,10 +84,19 @@ void gameBox::setFocus(bool hasFocus) {
         this->setProperty("class", "focused");
         qDebug() << "Size up";
         this->thumbnail->setFixedSize(WIDTH * 1.5, HEIGHT * 1.5);
+        top->show();
+        bottomTop->show();
+        bottomBottom->show();
+        bottomMiddle->show();
+
     } else {
         qDebug() << "Size down";
         this->setProperty("class", "");
         this->thumbnail->setFixedSize(WIDTH, HEIGHT);
+        top->hide();
+        bottomTop->hide();
+        bottomBottom->hide();
+        bottomMiddle->hide();
     }
 
     this->setStyleSheet(QString::fromStdString(STYLES));
@@ -93,4 +112,9 @@ void gameBox::onImageReceived(QByteArray data) {
 gameBox::~gameBox()
 {
     delete ui;
+    delete top;
+    delete thumbnail;
+    delete bottomTop;
+    delete bottomMiddle;
+    delete bottomBottom;
 }

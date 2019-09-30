@@ -31,6 +31,10 @@ private:
 
     void onImageReceived(QByteArray);
     QLabel *thumbnail;
+    QLabel *top;
+    QLabel *bottomTop;
+    QLabel *bottomMiddle;
+    QLabel *bottomBottom;
 };
 
 #endif // GAMEBOX_H
