@@ -31,12 +31,12 @@ gameBox::gameBox(game g, QWidget *parent) :
 
     thumbnail = new QLabel();
     thumbnail->setFixedSize(WIDTH, HEIGHT);
-//    thumbnail->setScaledContents(true);
+    thumbnail->setScaledContents(true);
     thumbnail->setStyleSheet("background: black");
     thumbnail->setAlignment(Qt::AlignHCenter);
 
     QLabel *bottomTop = new QLabel(QString::fromStdString(g.recap.title));
-    bottomTop->setMaximumHeight(48);
+    bottomTop->setMaximumHeight(24);
     bottomTop->setWordWrap(true);
     bottomTop->setAlignment(Qt::AlignHCenter);
 
@@ -74,7 +74,6 @@ void gameBox::setFocus(bool hasFocus) {
         this->setProperty("class", "focused");
         qDebug() << "Size up";
         this->thumbnail->setFixedSize(WIDTH * 1.5, HEIGHT * 1.5);
-
     } else {
         qDebug() << "Size down";
         this->setProperty("class", "");

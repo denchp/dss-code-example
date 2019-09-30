@@ -38,6 +38,11 @@ void httpRequest::send(function<void(QByteArray)> onDataReceived) {
 
     connect(manager, &QNetworkAccessManager::finished,
             this, [=](QNetworkReply * reply) {
+        if (reply->error()) {
+            qDebug() << "Error completing request";
+            return;
+        }
+
         QByteArray data = reply->readAll();
         qDebug() << "Data received: " << data.size();
         onDataReceived(data);
