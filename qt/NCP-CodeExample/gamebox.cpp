@@ -66,8 +66,8 @@ gameBox::gameBox(game g, QWidget *parent) :
     bottomBottom->setSizePolicy(p);
     bottomBottom->hide();
     bottomBottom->setAlignment(Qt::AlignHCenter);
-    client->getImage(g.recap.imgUrl, [=](QByteArray d) { onImageReceived(d); });
 
+    client->getImage(g.recap.imgUrl, [=](QByteArray d) { onImageReceived(d); });
 
     this->layout()->addWidget(top);
     this->layout()->addWidget(thumbnail);

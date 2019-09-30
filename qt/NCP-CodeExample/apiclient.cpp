@@ -7,6 +7,7 @@
 #include <httprequest.h>
 #include <game.h>
 
+#include <QJsonValue>
 #include <QDebug>
 #include <QJsonDocument>
 #include <QByteArray>
@@ -34,39 +35,37 @@ void apiClient::getImage(string url, function<void (QByteArray)> onImageReceived
 
 vector<game> apiClient::parseData(QJsonDocument &json) {
     qDebug() << "Document parsed: ";
-    qDebug() << json["copyright"].toString();
-
     vector<game> games = *new vector<game>();
 
     int totalGames = json["totalGames"].toInt();
 
     for(int i = 0; i < totalGames; i++) {
+        QJsonValue root = json["dates"][0]["games"][i];
         game g {
             {
-                json["dates"][0]["games"][i]["teams"]["home"]["score"].toInt(), //score
-                json["dates"][0]["games"][i]["teams"]["home"]["team"]["name"].toString().toStdString(), //name
+                root["teams"]["home"]["score"].toInt(), //score
+                root["teams"]["home"]["team"]["name"].toString().toStdString(), //name
                 {
-                    json["dates"][0]["games"][i]["teams"]["home"]["leagueRecord"]["wins"].toInt(),
-                    json["dates"][0]["games"][i]["teams"]["home"]["leagueRecord"]["losses"].toInt(),
-                    json["dates"][0]["games"][i]["teams"]["home"]["leagueRecord"]["pct"].toString().toStdString()
+                    root["teams"]["home"]["leagueRecord"]["wins"].toInt(),
+                    root["teams"]["home"]["leagueRecord"]["losses"].toInt(),
+                    root["teams"]["home"]["leagueRecord"]["pct"].toString().toStdString()
                 } // record
             }, //home
             {
-                json["dates"][0]["games"][i]["teams"]["away"]["score"].toInt(), //score
-                json["dates"][0]["games"][i]["teams"]["away"]["team"]["name"].toString().toStdString(), //name
+                root["teams"]["away"]["score"].toInt(), //score
+                root["teams"]["away"]["team"]["name"].toString().toStdString(), //name
                 {
-                    json["dates"][0]["games"][i]["teams"]["away"]["leagueRecord"]["wins"].toInt(),
-                    json["dates"][0]["games"][i]["teams"]["away"]["leagueRecord"]["losses"].toInt(),
-                    json["dates"][0]["games"][i]["teams"]["away"]["leagueRecord"]["pct"].toString().toStdString()
+                    root["teams"]["away"]["leagueRecord"]["wins"].toInt(),
+                    root["teams"]["away"]["leagueRecord"]["losses"].toInt(),
+                    root["teams"]["away"]["leagueRecord"]["pct"].toString().toStdString()
                 } // record
             },//away
             {
-                json["dates"][0]["games"][i]["content"]["editorial"]["recap"]["mlb"]["image"]["cuts"][6]["src"].toString().toStdString(),
-                json["dates"][0]["games"][i]["content"]["editorial"]["recap"]["mlb"]["headline"].toString().toStdString()
+                root["content"]["editorial"]["recap"]["mlb"]["image"]["cuts"][6]["src"].toString().toStdString(),
+                root["content"]["editorial"]["recap"]["mlb"]["headline"].toString().toStdString()
             }, //recap
         };
 
-        qDebug() << QString::fromStdString(g.recap.imgUrl);
         games.push_back(g);
     }
 
