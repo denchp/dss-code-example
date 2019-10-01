@@ -5,9 +5,10 @@
 #include <QLabel>
 #include <QFrame>
 #include <QByteArray>
-
+#include <QPropertyAnimation>
 #include <apiclient.h>
 #include <game.h>
+#include <QPixmap>
 
 namespace Ui {
 class gameBox;
@@ -35,6 +36,9 @@ private:
     QLabel *bottomTop;
     QLabel *bottomMiddle;
     QLabel *bottomBottom;
+    QPixmap image;
+    QPropertyAnimation *animation;
+    QPropertyAnimation *reverseAnimation;
 };
 
 #endif // GAMEBOX_H

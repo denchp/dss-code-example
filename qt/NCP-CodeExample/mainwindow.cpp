@@ -40,6 +40,7 @@ MainWindow::MainWindow() : QMainWindow()
     // Set layout
     QHBoxLayout *layout = new QHBoxLayout();
     this->gameContainer->setLayout(layout);
+    this->gameContainer->layout()->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
     this->setCentralWidget(window);
     this->grabKeyboard();

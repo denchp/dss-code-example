@@ -9,11 +9,10 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QImage>
+#include <QPropertyAnimation>
 
-const int HEIGHT = 100;
-const int WIDTH = 200;
-
-const string STYLES = "QLabel { color: white} .focused QLabel { font-weight: bold }";
+#define HEIGHT 150
+#define WIDTH 266
 
 gameBox::gameBox(game g, QWidget *parent) :
     QWidget(parent),
@@ -21,8 +20,7 @@ gameBox::gameBox(game g, QWidget *parent) :
 {
     ui->setupUi(this);
     this->setLayout(new QVBoxLayout());
-    this->layout()->setAlignment(Qt::AlignHCenter);
-
+    this->layout()->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     this->top = new QLabel(this);
     top->setMaximumHeight(24);
     top->setAlignment(Qt::AlignHCenter);
@@ -36,11 +34,12 @@ gameBox::gameBox(game g, QWidget *parent) :
                                         g.home.name + " (" + to_string(g.home.score) + ")"));
 
     this->thumbnail = new QLabel();
-    thumbnail->sizePolicy().setRetainSizeWhenHidden(true);
-    thumbnail->setFixedSize(WIDTH, HEIGHT);
     thumbnail->setScaledContents(true);
     thumbnail->setStyleSheet("background: black");
-    thumbnail->setAlignment(Qt::AlignHCenter);
+    thumbnail->setAlignment(Qt::AlignVCenter);
+    thumbnail->resize(WIDTH, HEIGHT);
+    this->setMinimumSize(0,0);
+    this->setMaximumSize(static_cast<int>(WIDTH * 20), static_cast<int>(HEIGHT * 20));
 
     this->bottomTop = new QLabel(QString::fromStdString(g.recap.title));
     bottomTop->setSizePolicy(p);
@@ -67,6 +66,26 @@ gameBox::gameBox(game g, QWidget *parent) :
     bottomBottom->hide();
     bottomBottom->setAlignment(Qt::AlignHCenter);
 
+
+    QSize *startSize = new QSize(WIDTH, HEIGHT);
+    QSize *endSize = new QSize(QSize(static_cast<int>(WIDTH * 1.5), static_cast<int>(HEIGHT * 1.5)));
+
+    this->animation = new QPropertyAnimation(thumbnail, "size");
+    animation->setDuration(200);
+    animation->setStartValue(*startSize);
+    animation->setEndValue(*endSize);
+    connect(animation, &QPropertyAnimation::valueChanged, this, [=](QVariant size) {
+        thumbnail->setMinimumSize(size.toSize());
+    });
+
+    this->reverseAnimation = new QPropertyAnimation(thumbnail, "size");
+    reverseAnimation->setDuration(200);
+    reverseAnimation->setStartValue(*endSize);
+    reverseAnimation->setEndValue(*startSize);
+    connect(reverseAnimation, &QPropertyAnimation::valueChanged, this, [=](QVariant size) {
+        thumbnail->setMinimumSize(size.toSize());
+    });
+
     client->getImage(g.recap.imgUrl, [=](QByteArray d) { onImageReceived(d); });
 
     this->layout()->addWidget(top);
@@ -76,37 +95,36 @@ gameBox::gameBox(game g, QWidget *parent) :
     this->layout()->addWidget(bottomBottom);
 
     this->adjustSize();
-    this->setStyleSheet(QString::fromStdString(STYLES));
+    this->setStyleSheet(QString::fromStdString("QLabel { color: white; font-weight: bold }"));
 }
+
 
 void gameBox::setFocus(bool hasFocus) {
     if (hasFocus) {
-        this->setProperty("class", "focused");
         qDebug() << "Size up";
-        this->thumbnail->setFixedSize(WIDTH * 1.5, HEIGHT * 1.5);
+        this->animation->start();
         top->show();
         bottomTop->show();
         bottomBottom->show();
         bottomMiddle->show();
-
     } else {
         qDebug() << "Size down";
-        this->setProperty("class", "");
-        this->thumbnail->setFixedSize(WIDTH, HEIGHT);
+        this->reverseAnimation->start();
         top->hide();
         bottomTop->hide();
         bottomBottom->hide();
         bottomMiddle->hide();
     }
 
-    this->setStyleSheet(QString::fromStdString(STYLES));
+    this->adjustSize();
 }
 
 void gameBox::onImageReceived(QByteArray data) {
     qDebug() << "Image received: " << data.size();
     QPixmap pixmap;
     pixmap.loadFromData(data);
-    this->thumbnail->setPixmap(pixmap);
+    this->image = pixmap.scaledToWidth(WIDTH);
+    this->thumbnail->setPixmap(image);
 }
 
 gameBox::~gameBox()
